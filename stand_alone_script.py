@@ -1,4 +1,5 @@
 import sys
+import os
 
 from qgis.core import *
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QFileDialog, QLineEdit, QProgressBar
@@ -17,7 +18,7 @@ class Window(QWidget):
 
    def GUI(self):
       # Set-up the window dimensions and title
-      self.setGeometry(500,60,560,570)  #  setGeometry(x, y, width, height)
+      self.setGeometry(500,60,560,620)  #  setGeometry(x, y, width, height)
       self.setWindowTitle("GroundWater Buffer Generator")
 
       # Set-up the "Find Vector File" Label
@@ -105,15 +106,20 @@ class Window(QWidget):
       self.FindOnlyFold_Button.clicked.connect(self.FindFolder_OnlyBuff_Button_clicked)
       self.FindOnlyFold_Button.show()
 
+      # Set-up the error-message Label
+      self.Error_Message_Label = QLabel(self)
+      self.Error_Message_Label.setText("")
+      self.Error_Message_Label.move(25,460)
+
       # Set-up the button to create GroundWater Buffer
       self.Process_Button = QPushButton('Create Buffer', self)
-      self.Process_Button.move(200,460)
+      self.Process_Button.move(200,500)
       self.Process_Button.clicked.connect(self.create_GW_Buffer)
       self.Process_Button.show()
 
       # Set-up Progress Bar
       self.Pbar = QProgressBar(self)
-      self.Pbar.setGeometry(25, 510, 500, 30)  #  setGeometry(x, y, width, height)
+      self.Pbar.setGeometry(25, 550, 500, 30)  #  setGeometry(x, y, width, height)
       self.Pbar.show()
 
       Processing.initialize()
@@ -143,12 +149,29 @@ class Window(QWidget):
 
    def create_GW_Buffer(self):
       self.Pbar.setValue(0) # reset progress bar
+      self.Error_Message_Label.setText("") # reset error message to blank
+
+      # Set function parameters
       VFileName = self.FindVFile_LineEdit.text()
       RFileName = self.FindRFile_LineEdit.text()
       BufferExtent = self.SelectExt_LineEdit.text()
       PixExt = self.SelectPixExt_LineEdit.text()
       FullFold = self.FindFullFold_LineEdit.text()
       OnlyFold = self.FindOnlyFold_LineEdit.text()
+
+      # Error Handling: Check for empty parameters
+      if not FullFold or not OnlyFold or not PixExt or not BufferError or not RFileName or not VFileName:
+         self.Error_Message_Label.resize(400, 20)
+         self.Error_Message_Label.setText("WARNING: One or more of your parameters are empty")
+         return
+      
+      # Error Handling: Check if the selected files exist
+      if os.path.isfile(VFileName) is False or os.path.isfile(RFileName) is False:
+         self.Error_Message_Label.resize(400, 20)
+         self.Error_Message_Label.setText("WARNING: One or more of your selected files do not exist")
+         return
+      
+      ### START THE PROCESSING CODE TO CREATE GW RASTER BUFFER ####################################
 
       fix_geom = processing.run("native:fixgeometries", {'INPUT':VFileName,
                                                          'OUTPUT': 'memory:'})
@@ -191,6 +214,8 @@ class Window(QWidget):
                                                                   'MULTITHREADING':False,
                                                                   'DATA_TYPE':0,
                                                                   'OUTPUT':OnlyFold})
+      ### END OF PROCESSING CODE ##################################################################
+      
       self.Pbar.setValue(100)
 
 if __name__ == '__main__':
