@@ -128,13 +128,12 @@ class Window(QWidget):
 
    def FindVFile_Button_clicked(self):
       # getOpenFileName(self, label, default path to search for files, types of files to look for)
-      fname = QFileDialog.getOpenFileName(self, "Open File", "D:/IBI_Group/Projects/ Custom_Raster_Buffer", 
-                                          "Shape File (*.shp);;GeoPackage (*.gpkg)")
+      fname = QFileDialog.getOpenFileName(self, "Open File", "C:/", "Shape File (*.shp);;GeoPackage (*.gpkg)")
       self.FindVFile_LineEdit.setText(str(fname[0]))
 
    def FindRFile_Button_clicked(self):
       # getOpenFileName(self, label, default path to search for files, types of files to look for)
-      fname = QFileDialog.getOpenFileName(self, "Open File", "D:/IBI_Group/Projects/ Custom_Raster_Buffer", "GeoTiff (*.tif)")
+      fname = QFileDialog.getOpenFileName(self, "Open File", "C:/", "GeoTiff (*.tif)")
       self.FindRFile_LineEdit.setText(str(fname[0]))
 
    def FindFolder_FullBuff_Button_clicked(self):
