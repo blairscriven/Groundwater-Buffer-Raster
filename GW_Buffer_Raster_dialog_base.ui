@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>503</width>
+    <width>507</width>
     <height>645</height>
    </rect>
   </property>
@@ -45,58 +45,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Enter Vector File Path</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="FindVFile_LineEdit">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>50</y>
-     <width>351</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
-   <property name="placeholderText">
-    <string>i.e. vector_file.gpkg</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="FindVFile_Button">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>50</y>
-     <width>93</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Find File</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="FindRFile_LineEdit">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>120</y>
-     <width>351</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
-   <property name="placeholderText">
-    <string>i.e. raster_file.tif</string>
+    <string>Select WSE Vector File</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -115,45 +64,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Enter Raster File Path</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="FindRFile_Button">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>120</y>
-     <width>93</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Find File</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="SelectExt_LineEdit">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>190</y>
-     <width>351</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
-   <property name="inputMethodHints">
-    <set>Qt::ImhDigitsOnly</set>
-   </property>
-   <property name="inputMask">
-    <string>0009</string>
-   </property>
-   <property name="placeholderText">
-    <string>i.e. 75</string>
+    <string>Select WSE Raster File</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -353,7 +264,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>460</y>
+     <y>470</y>
      <width>441</width>
      <height>16</height>
     </rect>
@@ -362,7 +273,53 @@
     <string/>
    </property>
   </widget>
+  <widget class="QgsMapLayerComboBox" name="Vector_MapLayer_ComboBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>351</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QgsMapLayerComboBox" name="Raster_MapLayer_ComboBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>120</y>
+     <width>351</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinBox_ext">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>190</y>
+     <width>351</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="maximum">
+    <number>9999</number>
+   </property>
+   <property name="value">
+    <number>75</number>
+   </property>
+   <property name="displayIntegerBase">
+    <number>10</number>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QgsMapLayerComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qgsmaplayercombobox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

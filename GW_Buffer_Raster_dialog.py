@@ -28,6 +28,7 @@ from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from qgis import processing
+from qgis.core import QgsMapLayerProxyModel, QgsVectorLayer
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -44,21 +45,17 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
-        self.FindVFile_Button.clicked.connect(self.FindVFile_Button_clicked)
-        self.FindRFile_Button.clicked.connect(self.FindRFile_Button_clicked)
+
+        # Set appropriate function for each button when clicked 
         self.FindFullFold_Button.clicked.connect(self.FindFolder_FullBuff_Button_clicked)
         self.FindOnlyFold_Button.clicked.connect(self.FindFolder_OnlyBuff_Button_clicked)
         self.Process_Button.clicked.connect(self.create_GW_Buffer)
-    
-    def FindVFile_Button_clicked(self):
-      # getOpenFileName(self, label, default path to search for files, types of files to look for)
-      fname = QFileDialog.getOpenFileName(self, "Open File", "C:/", "Shape File (*.shp);;GeoPackage (*.gpkg)")
-      self.FindVFile_LineEdit.setText(str(fname[0]))
 
-    def FindRFile_Button_clicked(self):
-      # getOpenFileName(self, label, default path to search for files, types of files to look for)
-      fname = QFileDialog.getOpenFileName(self, "Open File", "C:/", "GeoTiff (*.tif)")
-      self.FindRFile_LineEdit.setText(str(fname[0]))
+        # Define the MapLayer_ComboBoxes 
+        self.Vector_MapLayer_ComboBox.setFilters(QgsMapLayerProxyModel.VectorLayer)
+        self.Vector_MapLayer_ComboBox.setCurrentIndex(-1) #clear the selection
+        self.Raster_MapLayer_ComboBox.setFilters(QgsMapLayerProxyModel.RasterLayer) 
+        self.Raster_MapLayer_ComboBox.setCurrentIndex(-1) #clear the selection
 
     def FindFolder_FullBuff_Button_clicked(self):
       # getExistingDirectory(self, label, default path to search for folder)
@@ -75,24 +72,19 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
       self.Error_Message_Label.setText("") # reset error message to blank
 
       # Set function parameters
-      VFileName = self.FindVFile_LineEdit.text()
-      RFileName = self.FindRFile_LineEdit.text()
-      BufferExtent = self.SelectExt_LineEdit.text()
+      VFileName = self.Vector_MapLayer_ComboBox.currentLayer()
+      RFileName = self.Raster_MapLayer_ComboBox.currentLayer()
+      BufferExtent = int(self.spinBox_ext.value())
       PixExt = self.SelectPixExt_LineEdit.text()
       FullFold = self.FindFullFold_LineEdit.text()
       OnlyFold = self.FindOnlyFold_LineEdit.text()
 
       # Error Handling: Check for empty parameters
-      if not FullFold or not OnlyFold or not PixExt or not BufferError or not RFileName or not VFileName:
-         self.Error_Message_Label.resize(400, 20)
+      if not FullFold or not OnlyFold or not PixExt:
+         self.Error_Message_Label.resize(400, 20) # You have to resize label everytime you change the text
          self.Error_Message_Label.setText("WARNING: One or more of your parameters are empty")
          return
-      
-      # Error Handling: Check if the selected files exist
-      if os.path.isfile(VFileName) is False or os.path.isfile(RFileName) is False:
-         self.Error_Message_Label.resize(400, 20)
-         self.Error_Message_Label.setText("WARNING: One or more of your selected files do not exist")
-         return
+      assert isinstance(VFileName, QgsVectorLayer), 'no VectorLayer selected!'
       
       ### START THE PROCESSING CODE TO CREATE GW RASTER BUFFER ####################################
 
