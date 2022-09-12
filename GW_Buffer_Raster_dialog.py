@@ -71,21 +71,31 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
       self.Pbar.setValue(0) # reset progress bar
       self.Error_Message_Label.setText("") # reset error message to blank
 
-      # Set function parameters
+      # Set main function parameters
       VFileName = self.Vector_MapLayer_ComboBox.currentLayer()
       RFileName = self.Raster_MapLayer_ComboBox.currentLayer()
       BufferExtent = int(self.spinBox_ext.value())
-      PixExt = self.SelectPixExt_LineEdit.text()
       FullFold = self.FindFullFold_LineEdit.text()
       OnlyFold = self.FindOnlyFold_LineEdit.text()
 
       # Error Handling: Check for empty parameters
-      if not FullFold or not OnlyFold or not PixExt:
+      if not FullFold or not OnlyFold:
          self.Error_Message_Label.resize(400, 20) # You have to resize label everytime you change the text
          self.Error_Message_Label.setText("WARNING: One or more of your parameters are empty")
          return
       assert isinstance(VFileName, QgsVectorLayer), 'no VectorLayer selected!'
-      
+
+      # Create the GDAL Warp code to maintain raster extent and pixel resolution
+      ex = RFileName.extent()
+      xmax = ex.xMaximum()
+      ymax = ex.yMaximum()
+      xmin = ex.xMinimum()
+      ymin = ex.yMinimum()
+      pixelSizeX = RFileName.rasterUnitsPerPixelX()
+      pixelSizeY = RFileName.rasterUnitsPerPixelY()
+      PixExt = '-tr ' + str(pixelSizeX) + ' ' + str(pixelSizeY) +  ' -txe ' + str(xmin) + ' ' + str(xmax) + ' -tye ' + str(ymin) + ' ' + str(ymax)
+
+     
       ### START THE PROCESSING CODE TO CREATE GW RASTER BUFFER ####################################
 
       fix_geom = processing.run("native:fixgeometries", {'INPUT':VFileName,
