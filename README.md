@@ -2,6 +2,6 @@
 
 Here's an image of a drag racer in action:
 
-![WSE](A.png)   ![GWBuff](A.png)
+<img src="WSE_a.png"  width=50% height=50%>
 
 Move along.
