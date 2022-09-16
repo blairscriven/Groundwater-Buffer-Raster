@@ -28,7 +28,7 @@ from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from qgis import processing
-from qgis.core import QgsMapLayerProxyModel, QgsVectorLayer
+from qgis.core import QgsMapLayerProxyModel, QgsVectorLayer, QgsRasterLayer
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -47,8 +47,7 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
         self.setupUi(self)
 
         # Set appropriate function for each button when clicked 
-        self.FindFullFold_Button.clicked.connect(self.FindFolder_FullBuff_Button_clicked)
-        self.FindOnlyFold_Button.clicked.connect(self.FindFolder_OnlyBuff_Button_clicked)
+        self.FindBuffFold_Button.clicked.connect(self.FindFolder_Buff_Button_clicked)
         self.Process_Button.clicked.connect(self.create_GW_Buffer)
 
         # Define the MapLayer_ComboBoxes 
@@ -57,15 +56,10 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
         self.Raster_MapLayer_ComboBox.setFilters(QgsMapLayerProxyModel.RasterLayer) 
         self.Raster_MapLayer_ComboBox.setCurrentIndex(-1) #clear the selection
 
-    def FindFolder_FullBuff_Button_clicked(self):
+    def FindFolder_Buff_Button_clicked(self):
       # getExistingDirectory(self, label, default path to search for folder)
       foldname = QFileDialog.getExistingDirectory(self, "Open Directory")
-      self.FindFullFold_LineEdit.setText(str(foldname) + "/FullBuff.tif")
-
-    def FindFolder_OnlyBuff_Button_clicked(self):
-      # getExistingDirectory(self, label, default path to search for folder)
-      foldname = QFileDialog.getExistingDirectory(self, "Open Directory")
-      self.FindOnlyFold_LineEdit.setText(str(foldname) + "/OnlyBuff.tif")
+      self.FindBuffFold_LineEdit.setText(str(foldname) + "/GWBuff.tif")
 
     def create_GW_Buffer(self):
       self.Pbar.setValue(0) # reset progress bar
@@ -75,15 +69,21 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
       VFileName = self.Vector_MapLayer_ComboBox.currentLayer()
       RFileName = self.Raster_MapLayer_ComboBox.currentLayer()
       BufferExtent = int(self.spinBox_ext.value())
-      FullFold = self.FindFullFold_LineEdit.text()
-      OnlyFold = self.FindOnlyFold_LineEdit.text()
+      BuffFold = self.FindBuffFold_LineEdit.text()
 
       # Error Handling: Check for empty parameters
-      if not FullFold or not OnlyFold:
+      if not BuffFold:
          self.Error_Message_Label.resize(400, 20) # You have to resize label everytime you change the text
-         self.Error_Message_Label.setText("WARNING: One or more of your parameters are empty")
+         self.Error_Message_Label.setText("WARNING: You have not selected an output folder")
          return
-      assert isinstance(VFileName, QgsVectorLayer), 'no VectorLayer selected!'
+      if type(RFileName) is not QgsRasterLayer:
+         self.Error_Message_Label.resize(400, 20)
+         self.Error_Message_Label.setText("WARNING: You have not selected a WSE raster file")
+         return
+      if type(VFileName) is not QgsVectorLayer:
+         self.Error_Message_Label.resize(400, 20) 
+         self.Error_Message_Label.setText("WARNING: You have not selected a WSE vector file")
+         return
 
       # Create the GDAL Warp code to maintain raster extent and pixel resolution
       ex = RFileName.extent()
@@ -120,7 +120,7 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
                                                                'Z_FIELD':'SAMPLE_VAL1',
                                                                'EXTRA':PixExt,
                                                                'DATA_TYPE':5, # Float32
-                                                               'OUTPUT':FullFold})
+                                                               'OUTPUT':'TEMPORARY_OUTPUT'}) # Needed for temp rasters
       self.Pbar.setValue(60)
       Extent_poly = processing.run("native:extenttolayer", {'INPUT':first_Buff['OUTPUT'],
                                                             'OUTPUT':'memory:'})
@@ -129,7 +129,7 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
                                                     'OVERLAY':fix_geom['OUTPUT'],
                                                     'OUTPUT': 'memory:'})
       self.Pbar.setValue(70)
-      final_Buff = processing.run("gdal:cliprasterbymasklayer", { 'INPUT':first_Buff['OUTPUT'],
+      processing.runAndLoadResults("gdal:cliprasterbymasklayer", {'INPUT':first_Buff['OUTPUT'],
                                                                   'MASK':Dif_poly['OUTPUT'],
                                                                   'NODATA':-100,
                                                                   'ALPHA_BAND':False,
@@ -138,7 +138,7 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
                                                                   'SET_RESOLUTION':False,
                                                                   'MULTITHREADING':False,
                                                                   'DATA_TYPE':0,
-                                                                  'OUTPUT':OnlyFold})
+                                                                  'OUTPUT':BuffFold})
       ### END OF PROCESSING CODE ##################################################################
       
       self.Pbar.setValue(100)
