@@ -4,16 +4,16 @@
 
 [general]
 name=Groundwater Buffer Raster
-qgisMinimumVersion=3.22
+qgisMinimumVersion=3.22.8
 description=Expands and interpolates edge values of Water Surface Elevation (WSE) rasters to produce groundwater (GW) buffer rasters
-version=0.1
+version=0.5
 author=Blair William Gerald Scriven
 email=scrivenblair@gmail.com
 
-about=Expands and interpolates edge values of Water Surface Elevation (WSE) rasters to produce groundwater (GW) buffer rasters. Outputs .tif files and currently only accepts .tif files as the WSE raster input.
+about=Expands and interpolates edge values of Water Surface Elevation (WSE) rasters to produce groundwater (GW) buffer rasters.
 
-tracker=http://bugs
-repository=http://repo
+tracker=https://github.com/blairscriven/Groundwater-Buffer-Raster
+repository=https://github.com/blairscriven/Groundwater-Buffer-Raster
 # End of mandatory metadata
 
 # Recommended items:
