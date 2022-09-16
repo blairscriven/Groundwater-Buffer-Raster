@@ -10,9 +10,9 @@ version=0.5
 author=Blair William Gerald Scriven
 email=scrivenblair@gmail.com
 
-about=Expands and interpolates edge values of Water Surface Elevation (WSE) rasters to produce groundwater (GW) buffer rasters.
+about=Created for QGIS (V.3.22.8). Requires both a WSE raster file and a complimentary vector file. Vector file may require smoothing or simplification to be applied to plugin; see repository for more info.
 
-tracker=https://github.com/blairscriven/Groundwater-Buffer-Raster
+tracker=https://github.com/blairscriven/Groundwater-Buffer-Raster/issues
 repository=https://github.com/blairscriven/Groundwater-Buffer-Raster
 # End of mandatory metadata
 
@@ -23,7 +23,7 @@ hasProcessingProvider=no
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=python
+tags=groundwater, buffer, WSE, hydrology, flood
 
 homepage=http://homepage
 category=Plugins

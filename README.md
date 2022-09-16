@@ -1,6 +1,6 @@
 # Groundwater Raster Buffer - QGIS Plugin
 
-Expands and interpolates edge values of Water Surface Elevation (WSE) rasters to produce groundwater (GW) buffer rasters. Requires a vector version of the WSE file. Below is an example of the plugin processing a 75 metre groundwater buffer around a WSE file:
+Expands and interpolates edge values of Water Surface Elevation (WSE) rasters to produce groundwater (GW) buffer rasters. Requires a vectorized version of the WSE file. Below is an example of the plugin processing a 75 metre groundwater buffer around a WSE file:
 
 <img src="WSE_a.png"  width=30% height=30%><img src="WSE_b.png"  width=30% height=30%>
 
