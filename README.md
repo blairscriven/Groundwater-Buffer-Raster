@@ -26,4 +26,4 @@ If you encounter any other issues, please add a ticket to the'[issues](https://g
 
 ## Suggestions
 
-This plugin is new and will be updated to include better features and improve performance. Feel free to send a comment or a suggestion to my e-mail (scrivenblair@gmail.com)
+This plugin is new and will be updated to include better features and improve performance. Feel free to send a comment or a suggestion to my e-mail (blair.scriven@ucalgary.ca)
