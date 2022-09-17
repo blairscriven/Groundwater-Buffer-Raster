@@ -10,7 +10,7 @@ version=0.5
 author=Blair William Gerald Scriven
 email=scrivenblair@gmail.com
 
-about=Created for QGIS (V.3.22.8). Requires both a WSE raster file and a complimentary vector file. Vector file may require smoothing or simplification to be applied to plugin; see repository for more info.
+about=Created for QGIS version 3.22.8 and has not been tested for later versions. Requires both a WSE raster file and a complimentary vector file. Vector file may require smoothing or simplification to be applied to the plugin; see repository for more info.
 
 tracker=https://github.com/blairscriven/Groundwater-Buffer-Raster/issues
 repository=https://github.com/blairscriven/Groundwater-Buffer-Raster
@@ -25,7 +25,7 @@ hasProcessingProvider=no
 # Tags are comma separated with spaces allowed
 tags=groundwater, buffer, WSE, hydrology, flood
 
-homepage=http://homepage
+homepage=https://github.com/blairscriven/Groundwater-Buffer-Raster
 category=Plugins
 icon=icon.png
 # experimental flag
@@ -40,7 +40,7 @@ deprecated=False
 # plugin_dependencies=
 
 Category of the plugin: Raster, Vector, Database or Web
-# category=
+# category=Raster
 
 # If the plugin can run on QGIS Server.
 server=False
