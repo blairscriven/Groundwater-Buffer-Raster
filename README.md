@@ -7,6 +7,7 @@ Expands and interpolates (nearest neighbour) edge values of Water Surface Elevat
 *Data Source: FLUD Research Group, 2020, "Water Surface Elevations: Landcover +10% Roughness Scenario", https://doi.org/10.18738/T8/LBWRDQ, Texas Data Repository, V1*
 
 
+
 Below is an example of a 75 metre groundwater buffer raster processed by the plugin using the above WSE:
 
 <img src="WSE_b.png"  width=30% height=30%>
