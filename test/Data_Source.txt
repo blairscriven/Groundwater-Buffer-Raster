@@ -1,0 +1,3 @@
+Data Source:
+
+Data Source: FLUD Research Group, 2020, "Water Surface Elevations: Landcover +10% Roughness Scenario", https://doi.org/10.18738/T8/LBWRDQ, Texas Data Repository, V1
