@@ -87,15 +87,14 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
 
       # Create the GDAL Warp code to maintain raster extent and pixel resolution
       ex = RFileName.extent()
-      xmax = ex.xMaximum()
-      ymax = ex.yMaximum()
-      xmin = ex.xMinimum()
-      ymin = ex.yMinimum()
+      xmax = int(ex.xMaximum()) + BufferExtent # Don't add or subtract BufferExtent for merged raster (when fixed)
+      ymax = int(ex.yMaximum()) + BufferExtent
+      xmin = int(ex.xMinimum()) - BufferExtent
+      ymin = int(ex.yMinimum()) - BufferExtent
       pixelSizeX = RFileName.rasterUnitsPerPixelX()
       pixelSizeY = RFileName.rasterUnitsPerPixelY()
       PixExt = '-tr ' + str(pixelSizeX) + ' ' + str(pixelSizeY) +  ' -txe ' + str(xmin) + ' ' + str(xmax) + ' -tye ' + str(ymin) + ' ' + str(ymax)
 
-     
       ### START THE PROCESSING CODE TO CREATE GW RASTER BUFFER ####################################
 
       fix_geom = processing.run("native:fixgeometries", {'INPUT':VFileName,
