@@ -6,7 +6,7 @@
 name=Groundwater Buffer Raster
 qgisMinimumVersion=3.22.8
 description=Expands and interpolates edge values of Water Surface Elevation (WSE) rasters to produce groundwater (GW) buffer rasters
-version=0.6
+version=0.7
 author=Blair William Gerald Scriven
 email=scrivenblair@gmail.com
 

@@ -220,6 +220,22 @@
     <number>10</number>
    </property>
   </widget>
+  <widget class="QCheckBox" name="checkAdd2Map">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>320</y>
+     <width>161</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add to Current Project</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>

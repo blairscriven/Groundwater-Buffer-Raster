@@ -128,16 +128,31 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
                                                     'OVERLAY':fix_geom['OUTPUT'],
                                                     'OUTPUT': 'memory:'})
       self.Pbar.setValue(70)
-      processing.runAndLoadResults("gdal:cliprasterbymasklayer", {'INPUT':first_Buff['OUTPUT'],
-                                                                  'MASK':Dif_poly['OUTPUT'],
-                                                                  'NODATA':-100,
-                                                                  'ALPHA_BAND':False,
-                                                                  'CROP_TO_CUTLINE':True,
-                                                                  'KEEP_RESOLUTION':True,
-                                                                  'SET_RESOLUTION':False,
-                                                                  'MULTITHREADING':False,
-                                                                  'DATA_TYPE':0,
-                                                                  'OUTPUT':BuffFold})
+      
+      check = self.checkAdd2Map.isChecked()
+      if check is True:
+         processing.runAndLoadResults("gdal:cliprasterbymasklayer", {'INPUT':first_Buff['OUTPUT'],
+                                                                     'MASK':Dif_poly['OUTPUT'],
+                                                                     'NODATA':-100,
+                                                                     'ALPHA_BAND':False,
+                                                                     'CROP_TO_CUTLINE':True,
+                                                                     'KEEP_RESOLUTION':True,
+                                                                     'SET_RESOLUTION':False,
+                                                                     'MULTITHREADING':False,
+                                                                     'DATA_TYPE':0,
+                                                                     'OUTPUT':BuffFold})
+      else:
+         processing.run("gdal:cliprasterbymasklayer", {'INPUT':first_Buff['OUTPUT'],
+                                                       'MASK':Dif_poly['OUTPUT'],
+                                                       'NODATA':-100,
+                                                       'ALPHA_BAND':False,
+                                                       'CROP_TO_CUTLINE':True,
+                                                       'KEEP_RESOLUTION':True,
+                                                       'SET_RESOLUTION':False,
+                                                       'MULTITHREADING':False,
+                                                       'DATA_TYPE':0,
+                                                       'OUTPUT':BuffFold})
+
       ### END OF PROCESSING CODE ##################################################################
       
       self.Pbar.setValue(100)
