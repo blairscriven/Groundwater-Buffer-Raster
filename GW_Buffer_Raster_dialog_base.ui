@@ -2,13 +2,19 @@
 <ui version="4.0">
  <class>GWBuffRasterDialogBase</class>
  <widget class="QDialog" name="GWBuffRasterDialogBase">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>507</width>
-    <height>512</height>
+    <width>408</width>
+    <height>523</height>
    </rect>
+  </property>
+  <property name="cursor">
+   <cursorShape>ArrowCursor</cursorShape>
   </property>
   <property name="windowTitle">
    <string>Groundwater Buffer Raster</string>
@@ -16,8 +22,8 @@
   <widget class="QDialogButtonBox" name="button_box">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>460</y>
+     <x>50</x>
+     <y>480</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -102,46 +108,14 @@
     </font>
    </property>
    <property name="text">
-    <string>Select Output Folder for the Buffer Raster</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="FindBuffFold_Button">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>270</y>
-     <width>93</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Find Folder</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="FindBuffFold_LineEdit">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>270</y>
-     <width>351</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
-   <property name="placeholderText">
-    <string/>
+    <string>GW Buffered Raster</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Process_Button">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>360</y>
+     <x>100</x>
+     <y>390</y>
      <width>181</width>
      <height>31</height>
     </rect>
@@ -159,8 +133,8 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>400</y>
-     <width>461</width>
+     <y>430</y>
+     <width>371</width>
      <height>31</height>
     </rect>
    </property>
@@ -171,10 +145,10 @@
   <widget class="QLabel" name="Error_Message_Label">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>330</y>
-     <width>441</width>
-     <height>16</height>
+     <x>20</x>
+     <y>350</y>
+     <width>371</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -186,7 +160,7 @@
     <rect>
      <x>20</x>
      <y>50</y>
-     <width>351</width>
+     <width>371</width>
      <height>27</height>
     </rect>
    </property>
@@ -196,7 +170,7 @@
     <rect>
      <x>20</x>
      <y>120</y>
-     <width>351</width>
+     <width>371</width>
      <height>27</height>
     </rect>
    </property>
@@ -206,7 +180,7 @@
     <rect>
      <x>20</x>
      <y>190</y>
-     <width>351</width>
+     <width>371</width>
      <height>31</height>
     </rect>
    </property>
@@ -224,20 +198,50 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>320</y>
-     <width>161</width>
+     <y>310</y>
+     <width>261</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>Add to Current Project</string>
+    <string>Open output file after running algorithm</string>
    </property>
    <property name="checked">
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QgsFileWidget" name="qgsFileWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>270</y>
+     <width>371</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="useLink">
+    <bool>false</bool>
+   </property>
+   <property name="fullUrl">
+    <bool>false</bool>
+   </property>
+   <property name="dialogTitle">
+    <string/>
+   </property>
+   <property name="filter">
+    <string>GeoTiff (*.tif)</string>
+   </property>
+   <property name="storageMode">
+    <enum>QgsFileWidget::SaveFile</enum>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>QgsFileWidget</class>
+   <extends>QWidget</extends>
+   <header>qgsfilewidget.h</header>
+  </customwidget>
   <customwidget>
    <class>QgsMapLayerComboBox</class>
    <extends>QComboBox</extends>

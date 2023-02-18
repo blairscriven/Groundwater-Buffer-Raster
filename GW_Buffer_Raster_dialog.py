@@ -26,7 +26,7 @@ import os
 
 from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QMenu
 from qgis import processing
 from qgis.core import QgsMapLayerProxyModel, QgsVectorLayer, QgsRasterLayer
 
@@ -45,9 +45,8 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
-
+        
         # Set appropriate function for each button when clicked 
-        self.FindBuffFold_Button.clicked.connect(self.FindFolder_Buff_Button_clicked)
         self.Process_Button.clicked.connect(self.create_GW_Buffer)
 
         # Define the MapLayer_ComboBoxes 
@@ -56,10 +55,13 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
         self.Raster_MapLayer_ComboBox.setFilters(QgsMapLayerProxyModel.RasterLayer) 
         self.Raster_MapLayer_ComboBox.setCurrentIndex(-1) #clear the selection
 
+    '''
+    ### Example QFileDialog code, use only if Qmenu/QToolButton can be fixed - Otherwise, use QgsFileWidget
     def FindFolder_Buff_Button_clicked(self):
       # getExistingDirectory(self, label, default path to search for folder)
       foldname = QFileDialog.getExistingDirectory(self, "Open Directory")
       self.FindBuffFold_LineEdit.setText(str(foldname) + "/GWBuff.tif")
+   '''
 
     def create_GW_Buffer(self):
       self.Pbar.setValue(0) # reset progress bar
@@ -69,7 +71,7 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
       VFileName = self.Vector_MapLayer_ComboBox.currentLayer()
       RFileName = self.Raster_MapLayer_ComboBox.currentLayer()
       BufferExtent = int(self.spinBox_ext.value())
-      BuffFold = self.FindBuffFold_LineEdit.text()
+      BuffFold = self.qgsFileWidget.filePath()
 
       # Error Handling: Check for empty parameters
       if not BuffFold:
