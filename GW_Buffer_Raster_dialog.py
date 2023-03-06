@@ -96,16 +96,23 @@ class GWBuffRasterDialog(QtWidgets.QDialog, FORM_CLASS):
       pixelSizeX = RFileName.rasterUnitsPerPixelX()
       pixelSizeY = RFileName.rasterUnitsPerPixelY()
       PixExt = '-tr ' + str(pixelSizeX) + ' ' + str(pixelSizeY) +  ' -txe ' + str(xmin) + ' ' + str(xmax) + ' -tye ' + str(ymin) + ' ' + str(ymax)
-
+      
+      # Set 'DISTANCE' parameter for 'points along line' tool using raster pixel size ; no less than 5 metres for performance speed
+      if pixelSizeX > 5:
+         alongline = pixelSizeX
+      else:
+         alongline = 5
+      
       ### START THE PROCESSING CODE TO CREATE GW RASTER BUFFER ####################################
 
       fix_geom = processing.run("native:fixgeometries", {'INPUT':VFileName,
                                                          'OUTPUT': 'memory:'})
       self.Pbar.setValue(10)
-      vertex_points = processing.run("native:extractvertices", {'INPUT':fix_geom['OUTPUT'],
-                                                                'OUTPUT':'memory:'})
+      alongline_points = processing.run("native:pointsalonglines", {'INPUT':fix_geom['OUTPUT'],
+                                                                    'DISTANCE': alongline,
+                                                                    'OUTPUT':'memory:'})
       self.Pbar.setValue(15)
-      Sample_points = processing.run("native:rastersampling", { 'INPUT':vertex_points['OUTPUT'],
+      Sample_points = processing.run("native:rastersampling", { 'INPUT':alongline_points['OUTPUT'],
                                                                 'RASTERCOPY':RFileName,
                                                                 'COLUMN_PREFIX': 'SAMPLE_VAL',
                                                                 'OUTPUT': 'memory:'})
